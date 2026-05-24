@@ -3,3 +3,11 @@ ai_summary:
     summary: "Established the SDD foundation for Universal Intelligent Intake. Created the master plan, work order log, architecture document, and required reasoning audit files. Key decisions: D-UINT-001-01, D-UINT-001-02. Challenge: CH-UINT-001-01. Outcome: done."
   - wo: UINT-002
     summary: "Scaffolded the Universal Intelligent Intake Next.js application with TypeScript, Zod, a minimal demo UI, an intake API route, workflow registry, example insurance and cargo workflows, and a deterministic placeholder extractor. Key decisions: D-UINT-002-01, D-UINT-002-02. Challenge: CH-UINT-002-01. Outcome: done with typecheck and build passing."
+  - wo: UINT-003
+    summary: "Added provider abstraction for schema-bound extraction with an OpenAI provider selected by OPENAI_API_KEY and deterministic fallback behavior. Updated the intake result contract with extraction provider metadata while preserving runtime-known workflow selection, Zod validation, and missing-field detection. Key decisions: D-UINT-003-01, D-UINT-003-02. Challenge: CH-UINT-003-01. Outcome: done with typecheck and build passing."
+  - wo: UINT-004
+    summary: "Improved the demo UI with workflow descriptions, required-field chips, workflow-specific sample inputs, and structured result sections for payload, missing fields, validation, confidence, provenance, and provider metadata. Key decision: D-UINT-004-01. Challenge: CH-UINT-004-01. Outcome: done with typecheck and build passing."
+  - wo: UINT-005
+    summary: "Added extraction evaluation fixtures covering complete, partial, empty, and invalid-workflow cases for both insurance quote and cargo record workflows. Added a tsx-based evaluate script runnable via npm run evaluate. 6/6 fixtures pass with the deterministic provider. Key decision: D-UINT-005-01. Challenge: CH-UINT-005-01. Outcome: done with all fixtures passing and build clean."
+  - wo: UINT-006
+    summary: "Created .env.example documenting OPENAI_API_KEY and OPENAI_MODEL variables, and created README.md with project overview, setup instructions, command reference, evaluation guide, and workflow extension guide. Key decision: D-UINT-006-01. Challenge: CH-UINT-006-01. Outcome: done."

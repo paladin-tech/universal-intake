@@ -1,6 +1,6 @@
 # Universal Intelligent Intake Plan
 
-Last Updated: 2026-05-23
+Last Updated: 2026-05-24
 
 ## Product Summary
 
@@ -70,13 +70,30 @@ No sub-plans are currently required. Sub-plans may be added later if frontend, b
 
 Initial execution is tracked in `docs/work_orders.yaml`.
 
-The current bootstrap work order is:
+Current active work order:
 
-- `UINT-002`: Scaffold Next.js application and initial intake engine.
+- `UINT-007`: Commit and push progress to main branch.
+
+## Work Order Management Policy
+
+The project uses a rolling work-order queue.
+
+After each completed work order, the agent should inspect this plan and maintain:
+
+- One active work order when implementation should continue.
+- One to three next work orders for near-term visibility.
+- Completed work orders as execution history.
+
+This avoids an empty execution queue while preventing premature over-specification of distant work.
 
 Completed work orders:
 
 - `UINT-001`: Establish SDD foundation and initial project architecture.
+- `UINT-002`: Scaffold Next.js application and initial intake engine.
+- `UINT-003`: Add provider abstraction and OpenAI schema-bound extraction.
+- `UINT-004`: Improve intake result contract and UI inspection.
+- `UINT-005`: Add basic extraction evaluation fixtures.
+- `UINT-006`: Add `.env.example` and developer setup documentation.
 
 ## Product Principles
 
@@ -123,3 +140,4 @@ The following ideas are captured for later evaluation, not immediate execution:
 - Human-in-the-loop review UI.
 - Schema version inheritance.
 - Automated extraction quality evaluation.
+- **Broker/actor memory and knowledge graph**: Record completed intake flows per broker or actor in semantic format. Use semantic search over past flows to pre-fill extraction context, resolve low-confidence fields using historical patterns, and convert `needs_clarification` outcomes into soft-confirm suggestions. Highest-value use cases are extraction pre-fill for repeat actor+workflow combinations and anomaly detection when a flow deviates significantly from historical patterns. Key architectural constraint: memory is a read-only enrichment layer applied before extraction; deterministic validation must remain independent of memory. Provenance for memory-sourced values would use `source: "memory"` alongside `source: "input"`. Risk areas: stale memory when actor behavior changes, privacy and access governance for business-sensitive activity graphs, and clearly distinguishing input-extracted vs memory-inferred values in confidence/provenance output.

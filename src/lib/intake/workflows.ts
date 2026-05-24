@@ -26,6 +26,8 @@ export const workflows = {
     id: "insurance_quote",
     name: "Insurance Quote",
     description: "Extracts the data required to start an insurance premium quote request.",
+    sampleInput:
+      "Need quote for Toyota Corolla 2022 in Belgrade. Driver born 1990. Coverage should start next month.",
     schema: insuranceQuoteSchema,
     requiredFields: ["vehicleMake", "vehicleModel", "vehicleYear", "location", "driverBirthYear", "vin"],
     extractionGuidance: "Extract only insurance quote request details from the provided text.",
@@ -42,6 +44,8 @@ export const workflows = {
     id: "cargo_record",
     name: "Cargo Record",
     description: "Extracts the data required to create a cargo or shipment record.",
+    sampleInput:
+      "Need shipment from Hamburg to Tokyo. Electronics, 12 pallets, temperature sensitive. Weight is 2400 kg.",
     schema: cargoRecordSchema,
     requiredFields: ["origin", "destination", "cargoType", "palletCount", "weightKg", "dangerousGoodsStatus"],
     extractionGuidance: "Extract only cargo shipment details from the provided text.",
@@ -63,5 +67,11 @@ export function getWorkflow(workflowId: string): WorkflowDefinition | undefined 
 }
 
 export function listWorkflows() {
-  return Object.values(workflows).map(({ id, name, description }) => ({ id, name, description }));
+  return Object.values(workflows).map(({ id, name, description, requiredFields, sampleInput }) => ({
+    id,
+    name,
+    description,
+    requiredFields,
+    sampleInput,
+  }));
 }

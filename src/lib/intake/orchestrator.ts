@@ -1,5 +1,5 @@
 import { getWorkflow } from "./workflows";
-import { extractForWorkflow } from "./extractor";
+import { deterministicExtractionProvider, getExtractionProvider } from "./providers";
 import type { IntakeRequest, IntakeResult, MissingField } from "./types";
 
 export async function runIntake(request: IntakeRequest): Promise<IntakeResult> {
@@ -17,10 +17,25 @@ export async function runIntake(request: IntakeRequest): Promise<IntakeResult> {
       },
       confidence: {},
       provenance: {},
+      extraction: {
+        provider: "none",
+        fallbackUsed: false,
+        warnings: [],
+      },
     };
   }
 
-  const extraction = await extractForWorkflow(workflow, request.input);
+  const provider = getExtractionProvider();
+  const warnings: string[] = [];
+  let providerName = provider.name;
+  let fallbackUsed = false;
+  const extraction = await provider.extract(workflow, request.input).catch(async (error: unknown) => {
+    fallbackUsed = true;
+    providerName = deterministicExtractionProvider.name;
+    warnings.push(error instanceof Error ? error.message : "Extraction provider failed.");
+
+    return deterministicExtractionProvider.extract(workflow, request.input);
+  });
   const validationResult = workflow.schema.safeParse(extraction.payload);
   const missingFields = getMissingFields(workflow.requiredFields, extraction.payload, workflow.missingFieldMessages);
   const validationErrors = validationResult.success
@@ -38,6 +53,11 @@ export async function runIntake(request: IntakeRequest): Promise<IntakeResult> {
     },
     confidence: extraction.confidence,
     provenance: extraction.provenance,
+    extraction: {
+      provider: providerName,
+      fallbackUsed,
+      warnings,
+    },
   };
 }
 

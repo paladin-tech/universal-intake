@@ -21,6 +21,7 @@ export type WorkflowDefinition<TSchema extends z.ZodTypeAny = z.ZodTypeAny> = {
   id: string;
   name: string;
   description: string;
+  sampleInput: string;
   schema: TSchema;
   requiredFields: string[];
   extractionGuidance: string;
@@ -44,4 +45,9 @@ export type IntakeResult = {
   };
   confidence: Record<string, FieldConfidence>;
   provenance: Record<string, FieldProvenance>;
+  extraction: {
+    provider: string;
+    fallbackUsed: boolean;
+    warnings: string[];
+  };
 };

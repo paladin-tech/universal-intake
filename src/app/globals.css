@@ -21,3 +21,194 @@ textarea {
 button {
   cursor: pointer;
 }
+
+.shell {
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 56px 24px;
+}
+
+.hero {
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  color: #3d6df2;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(2.4rem, 5vw, 4.8rem);
+  letter-spacing: -0.06em;
+  line-height: 0.95;
+  margin: 0;
+  max-width: 780px;
+}
+
+.lede {
+  color: #5d6c7d;
+  font-size: 1.15rem;
+  line-height: 1.7;
+  max-width: 720px;
+}
+
+.grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(16, 32, 51, 0.08);
+  border-radius: 28px;
+  box-shadow: 0 24px 80px rgba(16, 32, 51, 0.08);
+  padding: 24px;
+}
+
+label {
+  display: block;
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+
+select,
+textarea {
+  background: #ffffff;
+  border: 1px solid rgba(16, 32, 51, 0.14);
+  border-radius: 16px;
+  color: #102033;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  width: 100%;
+}
+
+textarea {
+  min-height: 260px;
+  resize: vertical;
+}
+
+button {
+  background: #102033;
+  border: 0;
+  border-radius: 999px;
+  color: #ffffff;
+  font-weight: 800;
+  padding: 14px 22px;
+}
+
+button:disabled {
+  opacity: 0.55;
+}
+
+.workflowMeta {
+  background: #f8fbff;
+  border: 1px solid rgba(16, 32, 51, 0.08);
+  border-radius: 18px;
+  margin-bottom: 20px;
+  padding: 16px;
+}
+
+.workflowMeta p {
+  color: #5d6c7d;
+  line-height: 1.6;
+  margin: 0 0 14px;
+}
+
+.workflowMeta h3,
+.resultSection h3 {
+  font-size: 0.9rem;
+  margin: 0 0 10px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip,
+.statusPill,
+.warningPill {
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 7px 10px;
+}
+
+.chip {
+  background: #e9f0ff;
+  color: #244cc8;
+}
+
+.resultCard {
+  min-height: 480px;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+.resultStack {
+  display: grid;
+  gap: 14px;
+}
+
+.statusRow {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.statusPill.complete {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.statusPill.needs_clarification {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.statusPill.invalid,
+.warningPill {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.resultSection {
+  border-top: 1px solid rgba(16, 32, 51, 0.08);
+  padding-top: 14px;
+}
+
+pre {
+  background: #0c1724;
+  border-radius: 18px;
+  color: #d7e8ff;
+  line-height: 1.6;
+  margin: 0;
+  max-height: 260px;
+  overflow: auto;
+  padding: 18px;
+}
+
+.muted {
+  color: #6b7787;
+}
+
+.error {
+  color: #b42318;
+  font-weight: 800;
+}
+
+@media (max-width: 860px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

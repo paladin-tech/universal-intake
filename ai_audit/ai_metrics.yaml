@@ -11,3 +11,27 @@ ai_metrics:
     tool_calls: 14
     runs: 3
     latency_ms: "not_measured"
+  - wo: UINT-003
+    tokens_in: "9000(est)"
+    tokens_out: "4500(est)"
+    tool_calls: 12
+    runs: 2
+    latency_ms: "not_measured"
+  - wo: UINT-004
+    tokens_in: "7000(est)"
+    tokens_out: "3500(est)"
+    tool_calls: 8
+    runs: 2
+    latency_ms: "not_measured"
+  - wo: UINT-005
+    tokens_in: "5000(est)"
+    tokens_out: "3000(est)"
+    tool_calls: 7
+    runs: 2
+    latency_ms: "not_measured"
+  - wo: UINT-006
+    tokens_in: "3000(est)"
+    tokens_out: "2000(est)"
+    tool_calls: 4
+    runs: 1
+    latency_ms: "not_measured"

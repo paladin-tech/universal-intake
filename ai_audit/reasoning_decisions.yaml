@@ -19,3 +19,28 @@ decisions:
     note: Use a deterministic stub extractor before selecting a real LLM provider.
     rationale: The initial scaffold can validate orchestration, schemas, UI, and API behavior without hard-coding provider credentials or vendor-specific logic.
     confidence: high
+  - wo: UINT-003
+    id: D-UINT-003-01
+    note: Keep provider selection behind an extraction interface.
+    rationale: The intake engine should remain provider-agnostic so OpenAI can be used now without coupling workflow orchestration to vendor-specific code.
+    confidence: high
+  - wo: UINT-003
+    id: D-UINT-003-02
+    note: Preserve deterministic validation after AI extraction.
+    rationale: AI output is probabilistic, so Zod validation and missing field detection remain authoritative even when OpenAI is used.
+    confidence: high
+  - wo: UINT-004
+    id: D-UINT-004-01
+    note: Split the demo response into inspection sections instead of raw JSON only.
+    rationale: The MVP needs quick human review of payload, missing fields, validation, confidence, provenance, and provider metadata.
+    confidence: high
+  - wo: UINT-005
+    id: D-UINT-005-01
+    note: Use a plain TypeScript evaluation script via tsx rather than a test framework.
+    rationale: Keeps the evaluation dependency footprint minimal; no Jest/Vitest config needed, runs with a single npm script.
+    confidence: high
+  - wo: UINT-006
+    id: D-UINT-006-01
+    note: Provide .env.example instead of documenting variables only in README.
+    rationale: .env.example is the conventional developer contract for environment configuration; it is safe to commit and tools like dotenv pick it up automatically.
+    confidence: high

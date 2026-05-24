@@ -1,4 +1,4 @@
-last_updated: 2026-05-23
+last_updated: 2026-05-24
 project: Universal Intelligent Intake
 work_orders:
   - id: UINT-001
@@ -63,3 +63,111 @@ work_orders:
       - D-UINT-002-02
     challenges:
       - CH-UINT-002-01
+  - id: UINT-003
+    title: Add provider abstraction and OpenAI schema-bound extraction
+    status: done
+    priority: high
+    created: 2026-05-24
+    updated: 2026-05-24
+    objective: Replace the deterministic placeholder extractor with a provider abstraction that can call OpenAI for schema-bound extraction while preserving deterministic validation.
+    scope:
+      - Add an AI provider interface for workflow extraction.
+      - Add an OpenAI implementation using the existing OPENAI_API_KEY environment variable.
+      - Keep runtime-known workflow selection outside the AI provider.
+      - Preserve deterministic Zod validation and missing field detection after extraction.
+      - Fall back safely when provider configuration is missing or unavailable.
+    deliverables:
+      - provider abstraction
+      - OpenAI extraction provider
+      - updated orchestrator integration
+      - environment documentation
+    acceptance_criteria:
+      - Typecheck and build pass.
+      - Intake still accepts workflowId and input.
+      - AI provider receives only the selected workflow schema/context.
+      - Missing provider configuration produces deterministic fallback behavior.
+    decisions:
+      - D-UINT-003-01
+      - D-UINT-003-02
+    challenges:
+      - CH-UINT-003-01
+  - id: UINT-004
+    title: Improve intake result contract and UI inspection
+    status: done
+    priority: medium
+    created: 2026-05-24
+    updated: 2026-05-24
+    objective: Make the demo UI and response contract easier to inspect for payload, missing fields, validation, confidence, and provenance.
+    scope:
+      - Split result UI into readable sections.
+      - Improve sample inputs per workflow.
+      - Add workflow descriptions and required field visibility.
+    deliverables:
+      - improved demo UI
+      - clearer workflow-specific examples
+    acceptance_criteria:
+      - UI clearly shows extracted payload, missing fields, validation, confidence, and provenance.
+      - Workflow selection updates the sample input.
+    decisions:
+      - D-UINT-004-01
+    challenges:
+      - CH-UINT-004-01
+  - id: UINT-005
+    title: Add basic extraction evaluation fixtures
+    status: done
+    priority: medium
+    created: 2026-05-24
+    updated: 2026-05-24
+    objective: Add lightweight fixtures for repeatable validation of example workflow extraction behavior.
+    scope:
+      - Add representative inputs for insurance quote and cargo record workflows.
+      - Add expected required-field coverage checks.
+      - Add a script or test entry point for local evaluation.
+    deliverables:
+      - extraction fixtures
+      - evaluation script or tests
+    acceptance_criteria:
+      - Evaluation can run locally.
+      - Fixtures cover complete and incomplete intake cases.
+    decisions:
+      - D-UINT-005-01
+    challenges:
+      - CH-UINT-005-01
+  - id: UINT-006
+    title: Add .env.example and developer setup documentation
+    status: done
+    priority: medium
+    created: 2026-05-24
+    updated: 2026-05-24
+    objective: Document required environment variables and provide a developer setup guide so new contributors can run the app and evaluation locally.
+    scope:
+      - Create .env.example with all expected variables.
+      - Add or update README.md with setup instructions.
+    deliverables:
+      - .env.example
+      - README.md
+    acceptance_criteria:
+      - .env.example lists all environment variables with descriptions.
+      - README covers install, dev, evaluate, typecheck commands.
+    decisions:
+      - D-UINT-006-01
+    challenges:
+      - CH-UINT-006-01
+  - id: UINT-007
+    title: Commit and push progress to main branch
+    status: in_progress
+    priority: medium
+    created: 2026-05-24
+    updated: 2026-05-24
+    objective: Stage all uncommitted changes and push a clean commit to origin main.
+    scope:
+      - Stage all modified and untracked files.
+      - Commit with a descriptive message.
+      - Push to origin main.
+    deliverables:
+      - git commit
+    acceptance_criteria:
+      - All changes are committed and pushed.
+      - No secrets committed.
+    decisions: []
+    challenges: []

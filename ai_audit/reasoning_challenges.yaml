@@ -13,3 +13,31 @@ challenges:
     reflection: This keeps the scaffold runnable and avoids premature coupling to a specific AI vendor.
     impact: medium
     confidence: high
+  - wo: UINT-003
+    id: CH-UINT-003-01
+    problem: Adding OpenAI extraction can accidentally shift business trust from deterministic validation to model output.
+    resolution: Keep OpenAI limited to schema-bound extraction and continue running deterministic validation and missing-field checks afterward.
+    reflection: This preserves the architecture principle that AI assists extraction but does not decide business validity.
+    impact: high
+    confidence: high
+  - wo: UINT-004
+    id: CH-UINT-004-01
+    problem: Workflow selection needed to update sample input and inspection context without confusing the current result.
+    resolution: Reset result state and load workflow-specific sample text whenever the selected workflow changes.
+    reflection: This makes the demo easier to inspect and prevents stale output from a previous workflow.
+    impact: medium
+    confidence: high
+  - wo: UINT-005
+    id: CH-UINT-005-01
+    problem: Fixture expectedStatus for complete-input cases was initially set to needs_clarification.
+    resolution: Corrected to "complete" after running evaluation and observing the engine correctly returns complete when all required fields are present.
+    reflection: Confirms the engine status logic is correct; the fixture was the error, not the engine.
+    impact: low
+    confidence: high
+  - wo: UINT-006
+    id: CH-UINT-006-01
+    problem: No README existed and environment variable requirements were undocumented.
+    resolution: Created README.md with setup, commands, and workflow guide, and .env.example as the authoritative variable reference.
+    reflection: Low risk, but important for onboarding and prevents accidental missing-key confusion when running the evaluate or dev scripts.
+    impact: low
+    confidence: high
