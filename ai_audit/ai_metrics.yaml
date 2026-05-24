@@ -35,3 +35,9 @@ ai_metrics:
     tool_calls: 4
     runs: 1
     latency_ms: "not_measured"
+  - wo: UINT-008
+    tokens_in: "4000(est)"
+    tokens_out: "1500(est)"
+    tool_calls: 6
+    runs: 1
+    latency_ms: "not_measured"

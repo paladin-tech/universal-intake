@@ -41,3 +41,10 @@ challenges:
     reflection: Low risk, but important for onboarding and prevents accidental missing-key confusion when running the evaluate or dev scripts.
     impact: low
     confidence: high
+  - wo: UINT-008
+    id: CH-UINT-008-01
+    problem: Real API key was placed in .env.example by the user, which is a committed file.
+    resolution: Cleared the key from .env.example immediately; confirmed .env (gitignored) already contained the key and is correctly loaded by Next.js.
+    reflection: .env.example must always remain a blank template. This reinforces the need to check open files before testing to catch accidental secret exposure.
+    impact: medium
+    confidence: high

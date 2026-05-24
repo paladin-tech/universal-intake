@@ -72,7 +72,7 @@ Initial execution is tracked in `docs/work_orders.yaml`.
 
 Current active work order:
 
-- `UINT-007`: Commit and push progress to main branch.
+- `UINT-009`: Improve OpenAI prompt and add confidence threshold handling.
 
 ## Work Order Management Policy
 
@@ -86,14 +86,35 @@ After each completed work order, the agent should inspect this plan and maintain
 
 This avoids an empty execution queue while preventing premature over-specification of distant work.
 
+### What qualifies as a work order
+
+A WO must represent a **shippable increment of product or engineering value** — something with observable behavior or capability that can be verified by running the app, evaluation, or type check.
+
+A WO is valid if it:
+
+- Delivers at least one new or changed capability, behavior, or integration.
+- Has acceptance criteria that can be verified by a human or automated check.
+- Touches meaningful logic, not just configuration or boilerplate.
+
+### What does not qualify as a standalone work order
+
+The following are **housekeeping steps** that belong inside the WO they support, never as separate WOs:
+
+- Committing and pushing to git.
+- Adding `.env.example`, `README.md`, or similar documentation that accompanies a feature.
+- Updating `plan.md`, `work_orders.yaml`, or audit files.
+- Installing a dependency required by another WO.
+
+These tasks are implicit closure steps for any WO. The agent must include them in the WO's scope, not split them out.
+
 Completed work orders:
 
 - `UINT-001`: Establish SDD foundation and initial project architecture.
 - `UINT-002`: Scaffold Next.js application and initial intake engine.
 - `UINT-003`: Add provider abstraction and OpenAI schema-bound extraction.
 - `UINT-004`: Improve intake result contract and UI inspection.
-- `UINT-005`: Add basic extraction evaluation fixtures.
-- `UINT-006`: Add `.env.example` and developer setup documentation.
+- `UINT-005`: Add basic extraction evaluation fixtures, developer setup documentation, and initial commit.
+- `UINT-008`: Wire OpenAI extraction end-to-end and verify with live API.
 
 ## Product Principles
 

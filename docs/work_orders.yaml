@@ -135,7 +135,8 @@ work_orders:
       - CH-UINT-005-01
   - id: UINT-006
     title: Add .env.example and developer setup documentation
-    status: done
+    status: retired
+    note: Housekeeping WO — folded into UINT-005 per WO scope policy.
     priority: medium
     created: 2026-05-24
     updated: 2026-05-24
@@ -155,7 +156,8 @@ work_orders:
       - CH-UINT-006-01
   - id: UINT-007
     title: Commit and push progress to main branch
-    status: in_progress
+    status: retired
+    note: Housekeeping WO — commits are an implicit closure step for any WO, not standalone deliverables.
     priority: medium
     created: 2026-05-24
     updated: 2026-05-24
@@ -169,5 +171,48 @@ work_orders:
     acceptance_criteria:
       - All changes are committed and pushed.
       - No secrets committed.
+    decisions: []
+    challenges: []
+  - id: UINT-008
+    title: Wire OpenAI extraction end-to-end and verify with live API
+    status: done
+    priority: high
+    created: 2026-05-24
+    updated: 2026-05-24
+    objective: Verify the OpenAI provider path works end-to-end with a real API key and that confidence/provenance values in the response differ meaningfully from the deterministic provider.
+    scope:
+      - Run the dev server with OPENAI_API_KEY set.
+      - Submit a sample insurance and cargo intake via the UI.
+      - Confirm response status, payload, confidence, and provenance reflect AI extraction.
+      - Document any discrepancies or prompt tuning required.
+    deliverables:
+      - Verified end-to-end OpenAI extraction path
+      - Any prompt adjustments to openai.ts
+    acceptance_criteria:
+      - Intake returns non-empty payload when input is in natural language.
+      - extraction.provider is "openai" and fallbackUsed is false.
+    decisions:
+      - D-UINT-008-01
+    challenges:
+      - CH-UINT-008-01
+  - id: UINT-009
+    title: Improve OpenAI prompt and add confidence threshold handling
+    status: pending
+    priority: high
+    created: 2026-05-24
+    updated: 2026-05-24
+    objective: Tune the OpenAI extraction prompt for more consistent field coverage and add handling when confidence falls below a configurable threshold.
+    scope:
+      - Review prompt output for edge cases and missing field patterns.
+      - Add confidence threshold logic to flag low-confidence fields in warnings.
+      - Add evaluation fixtures covering natural-language inputs without explicit field labels.
+    deliverables:
+      - Tuned openai.ts prompt
+      - Confidence threshold handling in orchestrator or provider
+      - Additional evaluation fixtures
+    acceptance_criteria:
+      - Natural-language inputs extract fields without requiring explicit key:value labels.
+      - Fields below confidence threshold are surfaced in warnings or missingFields.
+      - All evaluation fixtures pass.
     decisions: []
     challenges: []

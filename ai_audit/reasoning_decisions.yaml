@@ -44,3 +44,8 @@ decisions:
     note: Provide .env.example instead of documenting variables only in README.
     rationale: .env.example is the conventional developer contract for environment configuration; it is safe to commit and tools like dotenv pick it up automatically.
     confidence: high
+  - wo: UINT-008
+    id: D-UINT-008-01
+    note: Load OPENAI_API_KEY from .env rather than .env.local for the live verification run.
+    rationale: Next.js loads .env as a base layer; the key was already present there, so no additional file was needed for the end-to-end test.
+    confidence: high
