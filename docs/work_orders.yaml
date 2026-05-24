@@ -1,0 +1,65 @@
+last_updated: 2026-05-23
+project: Universal Intelligent Intake
+work_orders:
+  - id: UINT-001
+    title: Establish SDD foundation and initial project architecture
+    status: done
+    priority: high
+    created: 2026-05-23
+    updated: 2026-05-23
+    objective: Create the mandatory planning and audit foundation for the Universal Intelligent Intake project before implementation begins.
+    scope:
+      - Create docs/plan.md as the master planning artifact.
+      - Create docs/work_orders.yaml as the execution log.
+      - Create docs/architecture.md for initial architecture decisions.
+      - Initialize required ai_audit reasoning files.
+      - Capture the key scope decision that workflow context is known at runtime and AI does not choose the schema.
+    deliverables:
+      - docs/plan.md
+      - docs/work_orders.yaml
+      - docs/architecture.md
+      - ai_audit/reasoning_decisions.yaml
+      - ai_audit/reasoning_challenges.yaml
+    acceptance_criteria:
+      - Mandatory SDD artifacts exist and reflect the agreed scope.
+      - Architecture document describes runtime-known workflow context.
+      - Work order prefix UINT is used consistently.
+      - Audit files contain at least one decision and one challenge entry for UINT-001.
+    decisions:
+      - D-UINT-001-01
+      - D-UINT-001-02
+    challenges:
+      - CH-UINT-001-01
+  - id: UINT-002
+    title: Scaffold Next.js application and initial intake engine
+    status: done
+    priority: high
+    created: 2026-05-23
+    updated: 2026-05-23
+    objective: Create the initial Next.js full-stack application with a minimal UI, API route, workflow registry, and schema-bound intake engine skeleton.
+    scope:
+      - Scaffold a Next.js TypeScript application in the repository.
+      - Add Zod for workflow schema definitions and deterministic validation.
+      - Create an intake API endpoint that accepts workflowId and free-form input.
+      - Create a minimal demo UI for selecting a workflow and submitting intake text.
+      - Add example insurance quote and cargo record workflows.
+      - Keep AI provider integration abstracted or stubbed until credentials/provider are selected.
+    deliverables:
+      - package.json
+      - Next.js app structure
+      - intake API route
+      - minimal intake UI
+      - workflow registry
+      - example workflow schemas
+    acceptance_criteria:
+      - App installs and type-checks.
+      - UI can submit a sample intake request.
+      - API validates workflowId and input.
+      - Runtime-known workflow selection is preserved.
+      - Unknown workflows return a deterministic error.
+      - Example workflows are available through the registry.
+    decisions:
+      - D-UINT-002-01
+      - D-UINT-002-02
+    challenges:
+      - CH-UINT-002-01

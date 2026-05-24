@@ -1,0 +1,21 @@
+decisions:
+  - wo: UINT-001
+    id: D-UINT-001-01
+    note: Treat workflow context as runtime-known instead of AI-classified.
+    rationale: The calling application or UI already knows the active use case, so removing AI workflow selection reduces ambiguity and makes extraction more reliable.
+    confidence: high
+  - wo: UINT-001
+    id: D-UINT-001-02
+    note: Use a Next.js full-stack architecture for the MVP.
+    rationale: The project needs a minimal web UI and API, and there is no current requirement that justifies a separate Python backend.
+    confidence: high
+  - wo: UINT-002
+    id: D-UINT-002-01
+    note: Scaffold the MVP as a Next.js App Router TypeScript project.
+    rationale: App Router supports a full-stack structure with colocated UI and API routes while keeping the MVP lightweight.
+    confidence: high
+  - wo: UINT-002
+    id: D-UINT-002-02
+    note: Use a deterministic stub extractor before selecting a real LLM provider.
+    rationale: The initial scaffold can validate orchestration, schemas, UI, and API behavior without hard-coding provider credentials or vendor-specific logic.
+    confidence: high

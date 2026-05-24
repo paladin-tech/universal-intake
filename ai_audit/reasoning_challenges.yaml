@@ -1,0 +1,15 @@
+challenges:
+  - wo: UINT-001
+    id: CH-UINT-001-01
+    problem: The original intelligent intake framing could imply AI-driven intent or schema guessing.
+    resolution: The plan and architecture explicitly state that workflow context is supplied at runtime and AI only performs schema-bound extraction within that context.
+    reflection: This narrows the MVP and should improve reliability, auditability, and implementation clarity.
+    impact: high
+    confidence: high
+  - wo: UINT-002
+    id: CH-UINT-002-01
+    problem: The project needs an intake flow before an LLM provider and credentials have been selected.
+    resolution: Implement the provider boundary with a deterministic placeholder extractor so the system shape can be tested safely.
+    reflection: This keeps the scaffold runnable and avoids premature coupling to a specific AI vendor.
+    impact: medium
+    confidence: high

@@ -1,0 +1,5 @@
+ai_summary:
+  - wo: UINT-001
+    summary: "Established the SDD foundation for Universal Intelligent Intake. Created the master plan, work order log, architecture document, and required reasoning audit files. Key decisions: D-UINT-001-01, D-UINT-001-02. Challenge: CH-UINT-001-01. Outcome: done."
+  - wo: UINT-002
+    summary: "Scaffolded the Universal Intelligent Intake Next.js application with TypeScript, Zod, a minimal demo UI, an intake API route, workflow registry, example insurance and cargo workflows, and a deterministic placeholder extractor. Key decisions: D-UINT-002-01, D-UINT-002-02. Challenge: CH-UINT-002-01. Outcome: done with typecheck and build passing."

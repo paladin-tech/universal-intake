@@ -1,0 +1,253 @@
+# Always assume every project has a plan.md and work_orders.yaml in the docs/ folder.
+# If either file is absent, generate it from the template.
+# When editing initiative logic, update these files first and keep Last Updated current.
+#
+# plan.md is the master planning artifact located at docs/plan.md.
+# It may optionally define sub-plans (e.g. docs/plan-frontend.md, docs/plan-backend.md,
+# docs/plan-ai.md) referenced inside plan.md.
+#
+# Always read sub-plans alongside plan.md when present:
+#   - Treat sub-plans as extensions of the master plan, not independent sources.
+#   - Apply the same Last Updated discipline: update sub-plans before work_orders.yaml
+#     if initiative logic changes in those areas.
+#   - Keep cross-references clear: plan.md remains the single entry point and should
+#     link to all sub-plans.
+#
+# In summary:
+#   - docs/plan.md (master) + optional sub-plans = the authoritative plan set
+#   - docs/work_orders.yaml = execution log derived from the plan set
+---
+project:
+  # Schema format for reasoning artifacts (when/how to populate: see ai_audit.populate_rules)
+  reasoning:
+    store_as:
+      decisions:
+        per_work_order:
+          file: ai_audit/reasoning_decisions.yaml
+          path: decisions[]      # each: { wo, id, note, rationale, confidence }
+        schema: { wo: string, id: string, note: string, rationale: string, confidence: high|medium|low }
+      challenges:
+        per_work_order:
+          file: ai_audit/reasoning_challenges.yaml
+          path: challenges[]     # each: { wo, id, problem, resolution, reflection, impact, confidence }
+        schema: { wo: string, id: string, problem: string, resolution: string, reflection: string, impact: high|medium|low, confidence: high|medium|low }
+    id_format:
+      decisions: 'D-<WO>-NN'      # e.g., D-003-01
+      challenges: 'CH-<WO>-NN'    # e.g., CH-003-01
+    notes:
+      - "Decisions and challenges are tracked per work order."
+      - "Keep entries concise — post-mortem bullet point style."
+
+  discipline_policy:
+    follow_plan: true
+    notes:
+      - "Always align work with plan.md and work_orders.yaml."
+      - "Do not drift away from the plan unless explicitly updated in plan.md."
+      - "If divergence is needed, first update plan.md with reasoning before proceeding."
+
+  experimental_policy:
+    capture_experiments: true
+    store_in:
+      plan.md: Experimental Features section
+      subplans: optional
+      work_orders.yaml: only if promoted to active
+    notes:
+      - "Experimental ideas should be logged but not executed immediately."
+      - "Treat them as backlog items for future evaluation."
+
+      - summary
+
+    # Explicitly exclude raw free-form chain-of-thought to minimize sensitive content in artifacts.
+    exclude_fields:
+      - raw_chain_of_thought
+      - verbatim_internal_notes
+
+    redact_rules:
+      # Redact likely-sensitive content in traces
+      - secrets
+      - api_keys
+      - passwords
+      - access_tokens
+      - emails
+      - phone_numbers
+      - IP_address
+      - file_paths_outside_repo
+
+    # Link traces to WOs in ai_audit/work_orders.yaml
+    store_as:
+      per_work_order:
+        file: ai_audit/execution_trace.yaml
+        path: trace[]
+        # each entry must contain: { wo, id, timestamp, agent, intent, steps?, metrics?, ... }
+
+    # Retention controls (keep data helpful, but not too much)
+    retention:
+      max_entries_per_wo: 10
+      max_days: 60
+      trim: oldest_first
+
+    # Auto-link heuristics for cross-referencing with decisions & challenges already in WOs
+    linkages:
+      decisions_field: decisions
+      challenges_field: challenges
+
+    notes:
+      - "Store structured, summarized reasoning and tool usage. No raw CoT."
+      - "Execution trace shows how work was done; rationale per step is required."
+      - "Use IDs like T-<WO>-NN for trace entries (e.g., T-001-01)."
+
+    notes:
+      - "Metrics help with cost/perf tracking per WO without storing raw logs."
+      - "Safe to display in UI; no sensitive content."
+
+  enforcement_policy:
+    # Enforce presence by WO status across external files
+    cross_file_required_sections:
+      - file: ai_audit/reasoning_decisions.yaml
+        path: decisions[]
+        filter:
+          wo: ${WO_ID}
+        required: true
+        min_count: 1
+        on_status: [in_progress, done]
+
+      - file: ai_audit/reasoning_challenges.yaml
+        path: challenges[]
+        filter:
+          wo: ${WO_ID}
+        required: true
+        min_count: 1
+        on_status: [in_progress, done]
+
+      - file: ai_audit/execution_trace.yaml
+        path: trace[]
+        filter:
+          wo: ${WO_ID}
+        required: true
+        min_count: 1
+        on_status: [done]
+
+      - file: ai_audit/ai_summary.yaml
+        path: ai_summary[]
+        filter:
+          wo: ${WO_ID}
+        required: true
+        on_status: [done]
+
+      - file: ai_audit/ai_metrics.yaml
+        path: ai_metrics[]
+        filter:
+          wo: ${WO_ID}
+        required: true
+        on_status: [done]
+
+    # Field-level validation across external files
+    cross_file_field_rules:
+      - file: ai_audit/reasoning_challenges.yaml
+        path: challenges[].id
+        pattern: '^CH-[A-Z]+-[0-9]{3}-[0-9]{2}$'
+      - file: ai_audit/reasoning_challenges.yaml
+        path: challenges[].confidence
+        enum: [high, medium, low]
+      - file: ai_audit/reasoning_decisions.yaml
+        path: decisions[].id
+        pattern: '^D-[A-Z]+-[0-9]{3}-[0-9]{2}$'
+      - file: ai_audit/reasoning_decisions.yaml
+        path: decisions[].confidence
+        enum: [high, medium, low]
+      - file: ai_audit/execution_trace.yaml
+        path: trace[].id
+        pattern: '^T-[A-Z]+-[0-9]{3}-[0-9]{2}$'
+
+    # Behavior on violations
+    cascade_behavior:
+      on_status_change:
+        run_validation: true
+        block_if_noncompliant: true
+      on_violation:
+        auto_fix:
+          - file: ai_audit/reasoning_decisions.yaml
+            path: decisions[]
+          - file: ai_audit/reasoning_challenges.yaml
+            path: challenges[]
+          - file: ai_audit/execution_trace.yaml
+            path: trace[]
+          - file: ai_audit/ai_summary.yaml
+            path: ai_summary[]
+        rename_id_patterns:
+          - from: '^DEC-(.+)$'
+            to: 'D-\\1'
+        id_allocation:
+          decisions:
+            format: 'D-${WO_ID}-${NN_2}'
+            start_at: 1
+            pad_to: 2
+          challenges:
+            format: 'CH-${WO_ID}-${NN_2}'
+            start_at: 1
+            pad_to: 2
+
+  ai_audit:
+    # CORE PRINCIPLE: Every work order leaves an audit trail
+    # These files provide human and AI auditability of the development process
+
+    required_files:
+      - reasoning_decisions.yaml    # CRITICAL: Why we built it this way
+      - reasoning_challenges.yaml   # CRITICAL: What went wrong and how we fixed it
+
+    optional_files:
+      - ai_summary.yaml            # HUMAN-READABLE: Prose narrative of what was done (for quick audit)
+      - ai_metrics.yaml            # ANALYTICAL: Token/tool usage per WO (for cost/efficiency analysis)
+      - execution_trace.yaml       # DETAILED: Step-by-step execution log (for deep debugging)
+
+    # WHEN and HOW to populate each file:
+    populate_rules:
+      reasoning_decisions:
+        when:
+          - at_start: Identify key design choices from plan.md
+          - during: When facing implementation forks (A vs B)
+          - at_end: When WO scope changed from original plan
+        what: { wo, id, note, rationale, confidence }
+        how: Human judgment call with explicit rationale
+
+      reasoning_challenges:
+        when:
+          - during: When encountering unexpected blockers
+          - after: When debugging took >30 min
+          - at_end: When solution required trade-offs
+        what: { wo, id, problem, resolution, reflection, impact, confidence }
+        how: Honest post-mortem style documentation
+
+      ai_summary:
+        when: [at_end_of_wo, at_end_of_session]
+        what: 3-5 sentence prose narrative of what was accomplished
+        how: AI generates based on git diff + reasoning files
+        purpose: >
+          Enable rapid human audit without reading code.
+          Pattern: "Implemented [feature] by [approach]. Key decisions: [D-XXX].
+          Challenges: [CH-XXX]. Outcome: [status]."
+
+      ai_metrics:
+        when: [at_end_of_wo]
+        what: { wo, tokens_in, tokens_out, tool_calls, runs, latency_ms }
+        how: >
+          If IDE provides token counts: use actual.
+          If not available: estimate based on conversation length
+          (short=~2K, medium=~5K, long=~10K tokens).
+          Mark estimated values with "(est)".
+        purpose: Cost tracking, efficiency analysis, WO sizing
+
+      execution_trace:
+        when: [nice_to_have]
+        what: { id, timestamp, agent, intent, steps[], outcome, metrics }
+        how: Log significant actions (scaffold, refactor, API create)
+        purpose: Deep debugging, agent behavior analysis, process improvement
+        frequency: >
+          Populate for complex WOs (>5 steps) or when debugging.
+          Skip for trivial WOs (config changes, typos).
+
+    # CASCADE BEHAVIOR CONTRACT:
+    # - Never say "I don't track metrics" - estimate if actual unavailable
+    # - Never skip reasoning_decisions/challenges - they are REQUIRED
+    # - Generate ai_summary prose before declaring WO complete
+    # - execution_trace is BONUS quality - add when time permits

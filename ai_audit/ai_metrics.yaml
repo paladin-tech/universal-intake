@@ -1,0 +1,13 @@
+ai_metrics:
+  - wo: UINT-001
+    tokens_in: "5000(est)"
+    tokens_out: "2500(est)"
+    tool_calls: 8
+    runs: 1
+    latency_ms: "not_measured"
+  - wo: UINT-002
+    tokens_in: "9000(est)"
+    tokens_out: "5500(est)"
+    tool_calls: 14
+    runs: 3
+    latency_ms: "not_measured"
